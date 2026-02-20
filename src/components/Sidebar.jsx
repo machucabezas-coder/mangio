@@ -1,86 +1,118 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
+import { LayoutDashboard, TrendingDown, TrendingUp, Building2 } from 'lucide-react'
 
 const navItems = [
-  {
-    to: '/',
-    label: 'Dashboard',
-    icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-      </svg>
-    ),
-  },
-  {
-    to: '/gastos',
-    label: 'Gastos',
-    icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-      </svg>
-    ),
-  },
-  {
-    to: '/ingresos',
-    label: 'Ingresos',
-    icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-    ),
-  },
+  { to: '/', label: 'Dashboard', icon: LayoutDashboard, end: true },
+  { to: '/gastos', label: 'Gastos', icon: TrendingDown },
+  { to: '/ingresos', label: 'Ingresos', icon: TrendingUp },
 ]
 
-export default function Sidebar() {
+function Logo() {
   return (
-    <aside className="fixed top-0 left-0 h-screen w-60 bg-[#1e293b] border-r border-[#334155] flex flex-col z-10">
-      {/* Logo */}
-      <div className="px-6 py-5 border-b border-[#334155]">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-[#6366f1] flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-            </svg>
-          </div>
-          <div>
-            <p className="text-white font-bold text-lg leading-none">Mangio</p>
-            <p className="text-slate-400 text-xs mt-0.5">Gestión financiera</p>
-          </div>
+    <div className="px-5 py-5 border-b border-[#1f2937]">
+      <div className="flex items-center gap-3">
+        {/* Geometric icon */}
+        <div className="w-8 h-8 rounded-xl flex items-center justify-center relative overflow-hidden"
+          style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%)', boxShadow: '0 0 16px rgba(124,58,237,0.35)' }}>
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <rect x="2" y="9" width="4" height="7" rx="1" fill="white" fillOpacity="0.9" />
+            <rect x="7" y="5" width="4" height="11" rx="1" fill="white" />
+            <rect x="12" y="2" width="4" height="14" rx="1" fill="white" fillOpacity="0.7" />
+          </svg>
+        </div>
+        <div>
+          <p className="text-white font-bold text-base leading-none tracking-tight">Mangio</p>
+          <p className="text-slate-500 text-xs mt-0.5 font-medium">Finanzas</p>
         </div>
       </div>
+    </div>
+  )
+}
+
+export default function Sidebar() {
+  const location = useLocation()
+
+  return (
+    <aside className="fixed top-0 left-0 h-screen w-64 flex flex-col z-20 border-r border-[#1f2937]"
+      style={{ background: '#0d1424' }}>
+      <Logo />
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 py-4 space-y-1">
-        {navItems.map((item) => (
-          <NavLink
-            key={item.to}
-            to={item.to}
-            end={item.to === '/'}
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 ${
-                isActive
-                  ? 'bg-[#6366f1] text-white shadow-lg shadow-indigo-900/30'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-[#334155]'
-              }`
-            }
-          >
-            {item.icon}
-            {item.label}
-          </NavLink>
-        ))}
+      <nav className="flex-1 px-3 py-4 space-y-0.5">
+        <p className="text-slate-600 text-xs font-semibold uppercase tracking-widest px-3 mb-3 mt-1">
+          Principal
+        </p>
+        {navItems.map((item) => {
+          const isActive = item.end
+            ? location.pathname === item.to
+            : location.pathname.startsWith(item.to)
+          const Icon = item.icon
+
+          return (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.end}
+              className="relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors duration-150 group"
+              style={{
+                color: isActive ? '#fff' : '#6b7280',
+              }}
+            >
+              {/* Animated background pill */}
+              {isActive && (
+                <motion.div
+                  layoutId="activePill"
+                  className="absolute inset-0 rounded-xl"
+                  style={{ background: 'linear-gradient(135deg, rgba(124,58,237,0.25), rgba(76,29,149,0.15))' }}
+                  transition={{ type: 'spring', bounce: 0.15, duration: 0.5 }}
+                />
+              )}
+              {/* Active left border indicator */}
+              {isActive && (
+                <motion.div
+                  layoutId="activeBorder"
+                  className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 rounded-full"
+                  style={{ background: '#8b5cf6' }}
+                  transition={{ type: 'spring', bounce: 0.15, duration: 0.5 }}
+                />
+              )}
+
+              <Icon
+                size={17}
+                className="relative z-10 flex-shrink-0 transition-colors duration-150"
+                style={{ color: isActive ? '#a78bfa' : '#4b5563' }}
+              />
+              <span className="relative z-10 transition-colors duration-150">
+                {item.label}
+              </span>
+
+              {/* Hover glow on inactive */}
+              {!isActive && (
+                <span className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-150"
+                  style={{ background: 'rgba(255,255,255,0.03)' }} />
+              )}
+            </NavLink>
+          )
+        })}
       </nav>
 
-      {/* Footer */}
-      <div className="px-4 py-4 border-t border-[#334155]">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-[#334155] flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
+      {/* Separator */}
+      <div className="mx-5 border-t border-[#1f2937]" />
+
+      {/* User avatar */}
+      <div className="px-4 py-4">
+        <div className="flex items-center gap-3 px-2 py-2.5 rounded-xl hover:bg-white/5 transition-colors duration-150 cursor-pointer">
+          <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
+            style={{ background: 'linear-gradient(135deg, #1e3a5f, #0d1f3c)' }}>
+            <Building2 size={15} className="text-slate-400" />
           </div>
-          <div>
-            <p className="text-slate-300 text-xs font-medium">Mi empresa</p>
-            <p className="text-slate-500 text-xs">PyME</p>
+          <div className="min-w-0">
+            <p className="text-slate-200 text-xs font-semibold truncate">Machu & Co.</p>
+            <p className="text-slate-600 text-xs truncate">PyME · Argentina</p>
           </div>
+          <div className="ml-auto w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0"
+            style={{ boxShadow: '0 0 6px #34d399' }} />
         </div>
       </div>
     </aside>
